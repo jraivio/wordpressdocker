@@ -1,0 +1,29 @@
+version: '3.1'
+
+services:
+
+  wordpress:
+    image: wordpress
+    restart: always
+    ports:
+      - 8090:80
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: exampleuser
+      WORDPRESS_DB_PASSWORD: examplepass
+      WORDPRESS_DB_NAME: exampledb
+   command: sh -c echo "file_uploads = On\n" \
+         "memory_limit = 500M\n" \
+         "upload_max_filesize = 500M\n" \
+         "post_max_size = 500M\n" \
+         "max_execution_time = 600\n" \
+         > /usr/local/etc/php/conf.d/uploads.ini
+
+  db:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_DATABASE: exampledb
+      MYSQL_USER: exampleuser
+      MYSQL_PASSWORD: examplepass
+      MYSQL_RANDOM_ROOT_PASSWORD: '1'
